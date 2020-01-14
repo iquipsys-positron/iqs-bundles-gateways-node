@@ -1,0 +1,91 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: iqs-positron
+  name: iqs-bundles-gateways-node-deploy
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: iqs-bundles-gateways-node
+    spec: 
+      containers:
+      - name: iqs-bundles-gateways-node-pod
+        image: registry.gitlab.com/iqs-bundles/iqs-bundles-gateways-node:1.0.0-1-rc
+        ports:
+        - containerPort: 8080
+          name: gateways
+        env:
+        - name: ENV_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: env_name
+        - name: MONGO_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: mongo_enabled
+        - name: MONGO_SERVICE_URI
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: mongo_service_uri
+        - name: AWS_REGION
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: aws_region
+        - name: AWS_ACCESS_ID
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: aws_access_id
+        - name: AWS_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: aws_access_key
+        - name: TELTONIKA_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: teltonika_service_host
+        - name: TELTONIKA_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: teltonika_service_port
+        livenessProbe:
+          httpGet:
+            path: /heartbeat
+            port: 8080
+          initialDelaySeconds: 120
+          periodSeconds: 40
+          timeoutSeconds: 6
+      imagePullSecrets:
+      - name: gitlab-docker-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: iqs-positron
+  name: iqs-bundles-gateways
+  labels: 
+    app: iqs-bundles-gateways-node
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 30014
+    protocol: TCP
+    name: gateways
+  selector:
+    app: iqs-bundles-gateways-node

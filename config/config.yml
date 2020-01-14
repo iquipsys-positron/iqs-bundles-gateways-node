@@ -1,0 +1,165 @@
+---
+# Container descriptor
+- descriptor: "pip-services:context-info:default:default:1.0"
+  name: "iqs-bundles-gateways-node"
+  description: "Microservice for deploying iqs gateways microservices"
+
+# Console logger
+- descriptor: "pip-services:logger:console:default:1.0"
+  level: "trace"
+
+# Performance counters that posts values to log
+- descriptor: "pip-services:counters:log:default:1.0"
+  level: "trace"
+
+# AWS logging component
+- descriptor: "pip-services:logger:cloudwatch:default:1.0"
+  level: "info"
+  group: "{{ENV_NAME}}"
+  connection:
+    region: "{{{AWS_REGION}}}"
+  credential:
+    access_id: "{{{AWS_ACCESS_ID}}}"
+    access_key: "{{{AWS_ACCESS_KEY}}}"
+
+# AWS metrics component
+- descriptor: "pip-services:counters:cloudwatch:default:1.0"
+  level: "info"
+  connection:
+    region: "{{{AWS_REGION}}}"
+  credential:
+    access_id: "{{{AWS_ACCESS_ID}}}"
+    access_key: "{{{AWS_ACCESS_KEY}}}"
+
+# Common HTTP endpoint
+- descriptor: "pip-services:endpoint:http:default:1.0"
+  connection:
+    protocol: "http"
+    host: "0.0.0.0"
+    port: 8080
+
+# Heartbeat service
+- descriptor: "pip-services:heartbeat-service:http:default:1.0"
+
+# Status service
+- descriptor: "pip-services:status-service:http:default:1.0"
+
+# Discovery service
+- descriptor: "pip-services:discovery:memory:default:*"
+  mongodb: "uri={{{MONGO_SERVICE_URI}}};host={{{MONGO_SERVICE_HOST}}};port={{{MONGO_SERVICE_PORT}}};database={{{MONGO_DB}}}"
+
+# Credential store
+- descriptor: "pip-services:credential-store:memory:default:*"
+  mongodb: "username={{{MONGO_USER}}};password={{{MONGO_PASS}}}"
+
+############## iQs components ##############
+
+# Clusters component
+- descriptor: "iqs-services-clusters:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_GROUPS_SYSTEM_SERVICE_HOST}}}"
+    port: {{IQS_GROUPS_SYSTEM_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Beacons component
+- descriptor: "iqs-services-beacons:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
+    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Current object state component
+- descriptor: "iqs-services-currobjectstates:client:http-proxy:default:*"
+#   service_name: "iqs-services-currobjectstates"
+#   connection:
+#     port: {{IQS_GROUPS_PROCESSING_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Devices component
+- descriptor: "iqs-services-devices:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
+    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Gateways component
+- descriptor: "iqs-services-gateways:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
+    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Organizations component
+- descriptor: "iqs-services-Organizations:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
+    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# State updates component
+- descriptor: "iqs-services-stateupdates:client:http-proxy:default:*"
+#   service_name: "iqs-services-stateupdates"
+#   connection:
+#     port: {{IQS_GROUPS_PROCESSING_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Signals components
+- descriptor: "iqs-services-signals:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-signals:controller:default:default:*"
+- descriptor: "iqs-services-signals:client:direct:default:*"
+- descriptor: "iqs-services-signals:service:http:default:*"
+
+# REST gateway components
+- descriptor: "iqs-services-restgateway:controller:default:default:*"
+- descriptor: "iqs-services-restgateway:client:direct:default:*"
+- descriptor: "iqs-services-restgateway:service:http:default:*"
+
+# MQTT gateway components
+- descriptor: "iqs-services-mqttgateway:connector:default:default:1.0"
+  connection:
+    protocol: mqtt
+    host: "{{{MQTT_SERVICE_HOST}}}"
+    port: "{{{MQTT_SERVICE_PORT}}}"
+- descriptor: "iqs-services-mqttgateway:controller:default:default:1.0"
+  options:
+    up_topic: +/up
+    down_topic: +/down
+- descriptor: "iqs-services-mqttgateway:client:direct:default:*"
+- descriptor: "iqs-services-mqttgateway:service:http:default:*"
+
+# Teltonika gateway components
+- descriptor: "iqs-services-teltonikagateway:connector:default:default:1.0"
+  connection:
+    protocol: udp
+    host: "{{{TELTONIKA_SERVICE_HOST}}}"
+    port: "{{{TELTONIKA_SERVICE_PORT}}}"
+- descriptor: "iqs-services-teltonikagateway:controller:default:default:1.0"
+- descriptor: "iqs-services-teltonikagateway:service:http:default:*"

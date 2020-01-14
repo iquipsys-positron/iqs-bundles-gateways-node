@@ -1,0 +1,6 @@
+{
+    "name": "iqs-bundles-gateways-node",
+    "registry": "registry.gitlab.com/iqs-bundles",
+    "version": "1.0.0",
+    "build": "1"
+}
