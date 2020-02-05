@@ -55,22 +55,22 @@
 ############## iQs components ##############
 
 # Clusters component
-- descriptor: "iqs-services-clusters:client:http:default:*"
+- descriptor: "pip-services-clusters:client:http:default:*"
   connection:
     protocol: "http"
-    host: "{{{IQS_GROUPS_SYSTEM_SERVICE_HOST}}}"
-    port: {{IQS_GROUPS_SYSTEM_SERVICE_PORT}}
+    host: "{{{IQS_BUNDLES_ROOT_SERVICE_HOST}}}"
+    port: {{IQS_BUNDLES_ROOT_SERVICE_PORT}}
   options:
     connect_timeout: 10000
     timeout: 10000
     retries: 3
 
 # Beacons component
-- descriptor: "iqs-services-beacons:client:http:default:*"
+- descriptor: "pip-services-beacons:client:http:default:*"
   connection:
     protocol: "http"
-    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
-    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+    host: "{{{IQS_BUNDLES_ROOT_SERVICE_HOST}}}"
+    port: {{IQS_BUNDLES_ROOT_SERVICE_PORT}}
   options:
     connect_timeout: 10000
     timeout: 10000
@@ -90,8 +90,8 @@
 - descriptor: "iqs-services-devices:client:http:default:*"
   connection:
     protocol: "http"
-    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
-    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+    host: "{{{IQS_BUNDLES_ROOT_SERVICE_HOST}}}"
+    port: {{IQS_BUNDLES_ROOT_SERVICE_PORT}}
   options:
     connect_timeout: 10000
     timeout: 10000
@@ -101,19 +101,19 @@
 - descriptor: "iqs-services-gateways:client:http:default:*"
   connection:
     protocol: "http"
-    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
-    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+    host: "{{{IQS_BUNDLES_ROOT_SERVICE_HOST}}}"
+    port: {{IQS_BUNDLES_ROOT_SERVICE_PORT}}
   options:
     connect_timeout: 10000
     timeout: 10000
     retries: 3
 
 # Organizations component
-- descriptor: "iqs-services-Organizations:client:http:default:*"
+- descriptor: "pip-services-organizations:client:http:default:*"
   connection:
     protocol: "http"
-    host: "{{{IQS_GROUPS_CONFIGURATION_SERVICE_HOST}}}"
-    port: {{IQS_GROUPS_CONFIGURATION_SERVICE_PORT}}
+    host: "{{{IQS_BUNDLES_ROOT_SERVICE_HOST}}}"
+    port: {{IQS_BUNDLES_ROOT_SERVICE_PORT}}
   options:
     connect_timeout: 10000
     timeout: 10000
