@@ -36,6 +36,8 @@
     "pip-services3-rpc-node": "^3.0.0",
     "pip-services3-mongodb-node": "^3.0.0",
     "pip-services3-facade-node": "^3.0.0",
+    "pip-clients-clusters-node": "^1.0.0",
+    "pip-clients-beacons-node": "^1.0.0",
     "iqs-clients-currobjectstates-node": "^1.0.0",
     "iqs-clients-stateupdates-node": "^1.0.0",
     "iqs-clients-restgateway-node": "^1.0.0",
@@ -54,6 +56,7 @@
     "@types/chai": "*",
     "mocha": "*",
     "chai": "*",
-    "restify": "4.3.4"
+    "restify": "4.3.4",
+    "aws-sdk": "*"
   }
 }
