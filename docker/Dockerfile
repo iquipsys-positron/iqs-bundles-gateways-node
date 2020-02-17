@@ -29,6 +29,9 @@ ENV MONGO_SERVICE_HOST mongo
 ENV MONGO_SERVICE_PORT 27017
 ENV MONGO_DB app
 
+# Remove git key
+RUN rm /root/.ssh/id_rsa*
+
 EXPOSE 8080
 
 ENTRYPOINT [ "node", "./bin/run.js" ]
